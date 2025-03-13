@@ -7,7 +7,7 @@ $ npx how-many-deps
 
   You have:
     54 dependencies!
-      (both direct and indirect across 1 repo)
+      (both direct and indirect across 1 project)
 
 ```
 
@@ -18,6 +18,6 @@ $ npx how-many-deps
 
   You have:
     2175 dependencies!
-      (both direct and indirect across 28 repos)
+      (both direct and indirect across 28 projects)
 
 ```

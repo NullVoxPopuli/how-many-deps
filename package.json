@@ -1,6 +1,6 @@
 {
   "name": "how-many-deps",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "type": "module",
   "description": "Count how many deps your repo has",
   "repository": "https://github.com/NullVoxPopuli/how-many-deps",
