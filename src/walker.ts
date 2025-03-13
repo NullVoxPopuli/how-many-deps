@@ -31,8 +31,12 @@ export class Walker {
     const dir = await findRoot(process.cwd());
     const monorepoInfo = await dir.tool.getPackages(dir.rootDir);
 
-    const all = new Set([monorepoInfo.rootPackage, ...monorepoInfo.packages].map(x => x?.relativeDir).filter(Boolean).map(x => x + '/package.json'));
-
+    const all = new Set(
+      [monorepoInfo.rootPackage, ...monorepoInfo.packages]
+        .map((x) => x?.relativeDir)
+        .filter(Boolean)
+        .map((x) => x + "/package.json"),
+    );
 
     this.repos = all.size;
     this.spinner.start();
