@@ -5,6 +5,7 @@ import resolvePackagePath from "resolve-package-path";
 import ora from "ora";
 
 import { readJSONSync } from "./fs.ts";
+import { findRoot } from "@manypkg/find-root";
 
 export class Walker {
   private packageResolveCache = {
@@ -22,12 +23,27 @@ export class Walker {
   }
 
   spinner: any;
+  repos = 1;
 
-  scan() {
+  async scan() {
     this.spinner = ora("Starting scan");
 
+    const dir = await findRoot(process.cwd());
+    const monorepoInfo = await dir.tool.getPackages(dir.rootDir);
+
+    const all = new Set([monorepoInfo.rootPackage, ...monorepoInfo.packages].map(x => x?.relativeDir).filter(Boolean).map(x => x + '/package.json'));
+
+
+    this.repos = all.size;
     this.spinner.start();
-    this.traverse("package.json");
+
+    for (let entry of all) {
+      this.updateSpinner();
+      await Promise.resolve();
+      this.traverse(entry);
+      await Promise.resolve();
+      this.updateSpinner();
+    }
     this.spinner.stop();
   }
 

@@ -4,10 +4,12 @@ import { Walker } from "./walker.ts";
 
 let walker = new Walker();
 
-walker.scan();
+await walker.scan();
+
+let { repos, count } = walker;
 
 console.log(`
   You have:
-    ${walker.count} dependencies!
-      (both direct and indirect)
+    ${count} dependencies!
+      (both direct and indirect across ${repos} ${repos > 1 ? 'repos' : 'repo'})
 `);

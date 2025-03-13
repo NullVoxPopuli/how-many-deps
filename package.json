@@ -6,6 +6,8 @@
   "repository": "https://github.com/NullVoxPopuli/how-many-deps",
   "scripts": {
     "build": "tsc",
+    "run:source": "node --experimental-strip-types src/index.ts",
+    "run:dist": "node dist/index.js",
     "lint": "pnpm prettier --check src/**/*.ts",
     "lint:fix": "pnpm prettier --write src/**/*.ts",
     "prepack": "tsc",
