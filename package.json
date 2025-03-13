@@ -1,0 +1,40 @@
+{
+  "name": "how-many-deps",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Count how many deps your repo has",
+  "repository": "https://github.com/NullVoxPopuli/how-many-deps",
+  "scripts": {
+    "build": "tsc",
+    "lint": "pnpm prettier --check src/**/*.ts",
+    "lint:fix": "pnpm prettier --write src/**/*.ts",
+    "prepack": "tsc",
+    "clean": "git clean -x -f"
+  },
+  "files": [
+    "src",
+    "dist"
+  ],
+  "keywords": [],
+  "bin": "./dist/index.js",
+  "author": "NullVoxPopuli",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "@tsconfig/node22": "^22.0.0",
+    "@tsconfig/strictest": "^2.0.5",
+    "@types/node": "^22.7.9",
+    "@types/semver": "^7.5.8",
+    "prettier": "^3.3.3",
+    "typescript": "5.7.0-beta"
+  },
+  "dependencies": {
+    "@manypkg/find-root": "^2.2.3",
+    "@manypkg/get-packages": "^2.2.2",
+    "ora": "^8.2.0",
+    "resolve-package-path": "^4.0.3",
+    "yesno": "^0.4.0"
+  },
+  "engines": {
+    "node": ">= 22.*"
+  }
+}
