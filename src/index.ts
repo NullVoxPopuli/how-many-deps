@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { Walker } from "./walker.ts";
 
 let walker = new Walker();
