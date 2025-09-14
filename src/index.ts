@@ -2,5 +2,8 @@
 
 import { scan, printAndExit } from "./scanner.ts";
 
-await scan();
-await printAndExit();
+async function main() {
+  await scan();
+  await printAndExit();
+}
+main();

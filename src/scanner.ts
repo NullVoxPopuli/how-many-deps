@@ -1,9 +1,15 @@
 import { Worker, setEnvironmentData } from "node:worker_threads";
 import ora from "ora";
+import fs from 'node:fs';
+import path from 'node:path';
 
 setEnvironmentData("cwd", process.cwd());
 
-const worker = new Worker(new URL("./worker.ts", import.meta.url));
+let ts = fs.existsSync(path.join(import.meta.dirname, './worker.ts'));
+let workerModule = './worker' + (ts ? '.ts' : '.js')
+let workerURL = new URL(workerModule, import.meta.url)
+
+const worker = new Worker(workerURL);
 
 let spinner: ReturnType<typeof ora>;
 
