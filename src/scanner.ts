@@ -32,6 +32,7 @@ worker.on('message', (event) => {
     case 'exit': {
       p.scan.resolve?.();
       p.exit.resolve?.();
+      return;
     }
   }
   console.log('unhandled message in scanner', event);

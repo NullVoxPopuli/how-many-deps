@@ -17,8 +17,6 @@ function announce(type: string, data?: Record<string, unknown>) {
   send({ type, ...(data ?? {}) });
 }
 
-// send({ type: 'ready' });
-
 assert(parentPort, `This module may only be used as a worker. Expected \`parentPort\` to be defined.`);
 
 
@@ -33,15 +31,19 @@ parentPort.on('message', (event) => {
     }
     case 'print': {
 
-      let { repos, count } = walker;
+      let { repos, count, directs, indirects } = walker;
 
       console.log(`
   You have:
-    ${count} dependencies!
-      (both direct and indirect across ${repos} ${repos > 1 ? "projects" : "project"})
+    ${count} total dependencies!
+      ${directs} direct dependencies
+      ${indirects} indirect dependencies
+
+      (across ${repos} ${repos > 1 ? "projects" : "project"})
 `);
 
       announce('exit');
+      return;
     }
   }
 

@@ -11,6 +11,8 @@ export class Walker {
     send: (obj: Record<string, unknown>) => void;
     announce: (type: string, data?: Record<string, unknown>) => void;
   };
+  #ourDirs: Set<string> = new Set();
+  #ourDirects = new Set();
 
   constructor(parent: {
     send: (obj: Record<string, unknown>) => void,
@@ -33,6 +35,12 @@ export class Walker {
   get count() {
     return this.seen.size;
   }
+  get directs() {
+    return this.#ourDirects.size;
+  }
+  get indirects() {
+    return this.count - this.directs;
+  }
 
   spinner: any;
   repos = 1;
@@ -49,6 +57,8 @@ export class Walker {
         .filter(Boolean)
         .map((x) => x + "/package.json"),
     );
+
+    this.#ourDirs = new Set([...all].map(x => x.replace(/\/package\.json$/, '')));
 
     this.repos = all.size;
     this.#parent.announce('scan:start');
@@ -115,6 +125,10 @@ export class Walker {
     if (!target) {
       return false;
     }
+    if (this.#ourDirs.has(packageRoot)) {
+      this.#ourDirects.add(target);
+    }
+
     return this.traverse(target);
   }
 }
