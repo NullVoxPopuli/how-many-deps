@@ -1,56 +1,55 @@
-import { Worker, setEnvironmentData } from 'node:worker_threads';
+import { Worker, setEnvironmentData } from "node:worker_threads";
 import ora from "ora";
 
-setEnvironmentData('cwd', process.cwd());
+setEnvironmentData("cwd", process.cwd());
 
-const worker = new Worker(new URL('./worker.ts', import.meta.url));
+const worker = new Worker(new URL("./worker.ts", import.meta.url));
 
 let spinner: ReturnType<typeof ora>;
 
-
-worker.on('message', (event) => {
+worker.on("message", (event) => {
   let json = JSON.parse(event);
 
   switch (json.type) {
-    case 'scan:init': {
+    case "scan:init": {
       spinner = ora("Starting scan");
       return;
     }
-    case 'scan:start': {
+    case "scan:start": {
       spinner.start();
       return;
     }
-    case 'scan:update': {
+    case "scan:update": {
       spinner.text = json.message;
       return;
     }
-    case 'scan:stop': {
+    case "scan:stop": {
       spinner.stop();
       p.scan.resolve?.();
       return;
     }
-    case 'exit': {
+    case "exit": {
       p.scan.resolve?.();
       p.exit.resolve?.();
       return;
     }
   }
-  console.log('unhandled message in scanner', event);
+  console.log("unhandled message in scanner", event);
 });
 
-worker.on('error', (event) => {
-  console.log('in scanner:error', event);
+worker.on("error", (event) => {
+  console.log("in scanner:error", event);
 });
-worker.on('exit', (event) => {
-  console.log('in scanner:exit', event);
+worker.on("exit", (event) => {
+  console.log("in scanner:exit", event);
 });
 
 interface Deferred {
-  promise: null | Promise<void>
+  promise: null | Promise<void>;
   resolve: null | (() => void);
 }
 
-let p: Record<'scan' | 'exit', Deferred> = {
+let p: Record<"scan" | "exit", Deferred> = {
   scan: {
     promise: null,
     resolve: null,
@@ -58,18 +57,16 @@ let p: Record<'scan' | 'exit', Deferred> = {
   exit: {
     promise: null,
     resolve: null,
-  }
+  },
 };
-
-
 
 export async function scan() {
   if (p.scan?.promise) return p.scan.promise;
 
-  p.scan.promise = new Promise(resolve => {
+  p.scan.promise = new Promise((resolve) => {
     p.scan.resolve = resolve;
-    worker.postMessage('scan');
-  })
+    worker.postMessage("scan");
+  });
 
   return p.scan.promise;
 }
@@ -77,10 +74,10 @@ export async function scan() {
 export async function printAndExit() {
   if (p.exit?.promise) return p.exit.promise;
 
-  p.exit.promise = new Promise(resolve => {
+  p.exit.promise = new Promise((resolve) => {
     p.exit.resolve = resolve;
-    worker.postMessage('print');
-  })
+    worker.postMessage("print");
+  });
 
   await p.exit.promise;
 

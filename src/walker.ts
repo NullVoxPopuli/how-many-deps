@@ -2,7 +2,6 @@ import { dirname } from "node:path";
 
 import resolvePackagePath from "resolve-package-path";
 
-
 import { readJSONSync } from "./fs.ts";
 import { findRoot } from "@manypkg/find-root";
 
@@ -15,10 +14,9 @@ export class Walker {
   #ourDirects = new Set();
 
   constructor(parent: {
-    send: (obj: Record<string, unknown>) => void,
+    send: (obj: Record<string, unknown>) => void;
     announce: (type: string, data?: Record<string, unknown>) => void;
-  }
-  ) {
+  }) {
     this.#parent = parent;
   }
 
@@ -46,7 +44,7 @@ export class Walker {
   repos = 1;
 
   async scan() {
-    this.#parent.announce('scan:init');
+    this.#parent.announce("scan:init");
 
     const dir = await findRoot(process.cwd());
     const monorepoInfo = await dir.tool.getPackages(dir.rootDir);
@@ -58,10 +56,12 @@ export class Walker {
         .map((x) => x + "/package.json"),
     );
 
-    this.#ourDirs = new Set([...all].map(x => x.replace(/\/package\.json$/, '')));
+    this.#ourDirs = new Set(
+      [...all].map((x) => x.replace(/\/package\.json$/, "")),
+    );
 
     this.repos = all.size;
-    this.#parent.announce('scan:start');
+    this.#parent.announce("scan:start");
 
     for (let entry of all) {
       this.updateSpinner();
@@ -70,7 +70,7 @@ export class Walker {
       await Promise.resolve();
       this.updateSpinner();
     }
-    this.#parent.announce('scan:stop');
+    this.#parent.announce("scan:stop");
   }
 
   /**
@@ -78,7 +78,7 @@ export class Walker {
    * to scan
    */
   updateSpinner() {
-    this.#parent.announce('scan:update', {
+    this.#parent.announce("scan:update", {
       message: `Scanned ${this.seen.size} dependencies through ${this.edges} edges`,
     });
   }
