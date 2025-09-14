@@ -6,18 +6,22 @@ Count how many deps are in your repo
 $ npx how-many-deps
 
   You have:
-    54 dependencies!
-      (both direct and indirect across 1 project)
+    54 total dependencies!
+      11 direct dependencies
+      43 indirect dependencies
 
+      (across 1 project)
 ```
 
 and in a monorepo
 
 ```bash
-$ npx how-many-deps
+❯ pnpm dlx how-many-deps
 
   You have:
-    2175 dependencies!
-      (both direct and indirect across 28 projects)
+    3458 total dependencies!
+      523 direct dependencies
+      2935 indirect dependencies
 
+      (across 96 projects)
 ```
