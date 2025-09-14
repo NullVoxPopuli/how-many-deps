@@ -4,6 +4,8 @@
     "outDir": "./dist",
     "noEmitOnError": false,
     "allowImportingTsExtensions": true,
-    "rewriteRelativeImportExtensions": true
+    "rewriteRelativeImportExtensions": true,
+    // Linting
+    "noPropertyAccessFromIndexSignature": false
   }
 }
