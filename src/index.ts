@@ -1,15 +1,7 @@
 #!/usr/bin/env node
 
-import { Walker } from "./walker.ts";
+import { scan, printAndExit } from './scanner.ts';
 
-let walker = new Walker();
+await scan();
 
-await walker.scan();
-
-let { repos, count } = walker;
-
-console.log(`
-  You have:
-    ${count} dependencies!
-      (both direct and indirect across ${repos} ${repos > 1 ? "projects" : "project"})
-`);
+await printAndExit();
